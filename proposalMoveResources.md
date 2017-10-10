@@ -17,7 +17,7 @@ worsens, relations between these repositories:
   and eventual home of `kubectl`.
 * [_k8s.io/common_] -- code shared by `kexpand`,
   `kubectl` and the core.
-* [_k8s.io/utils_] -- code shared by everyone ([golang] supplement)
+* [_k8s.io/utils_] -- code shared by everyone ([golang] supplement).
 
 [`kexpand`]: https://github.com/kubernetes/kubectl/tree/master/cmd/kexpand
 
@@ -30,10 +30,10 @@ worsens, relations between these repositories:
 [golang]: https://golang.org/pkg/
 [_k8s.io/kubernetes/pkg/kubectl_]: https://github.com/kubernetes/kubernetes/tree/master/pkg/kubectl
 
-Specifically, `kexpand` needs to re-use code
-currently used by `kubectl` that lives in
-[_k8s.io/kubernetes/pkg/kubectl_] - specifically the
-`resource` and `validation` packages.
+`kexpand` needs to re-use code currently used by
+`kubectl` that lives in
+[_k8s.io/kubernetes/pkg/kubectl_] - at least the
+`resource` and `validation` packages (maybe more).
 
 To allow reuse, these packages should move to
 _k8s.io/common_.
@@ -56,7 +56,7 @@ that's supposed to be a pure API client with no
 dependencies on core code, should [eventually
 move][598] out of _k8s.io/kubernetes_ and into
 _k8s.io/kubectl_, hence the name of the latter
-repo.  Likewise no new command line API clients
+repo.  Likewise, no new command line API clients
 should appear in core.
 
 Such a move requires the additional repo
@@ -88,7 +88,7 @@ out of core into to repos meant for vendoring.
 
 ### Specifics
 
-Below find a script that _locally_ moves code from
+Below find a script that _locally_ copies code from
 _k8s.io/kubernetes_
 <blockquote>
 <pre>
@@ -97,7 +97,9 @@ _k8s.io/kubernetes_
    k8s.io/  kubernetes/   pkg/kubectl/resource
    k8s.io/  kubernetes/   pkg/kubectl/validation
 </pre>
+</blockquote>
 to respective directories in _k8s.io/common_:
+<blockquote>
 <pre>
    k8s.io/      common/   pkg/api
    k8s.io/      common/   resource
@@ -107,11 +109,13 @@ to respective directories in _k8s.io/common_:
 
 This informs and emulates the desired end state of
 `resource` and `validation` living in
-_k8s.io/common_.  Nobody wants `pkg/api` to live
-there too, since it holds unversioned types that
-are not part of a public API.  Nevertheless it
-temporarily needs to be copied too since
-`resource` and `validation` depend on it.
+_k8s.io/common_.
+
+Nobody wants `pkg/api` to live there too, since it
+holds unversioned types that are not part of a
+public API.  Unfortunately, `resource` and
+`validation` depend on it at the moment.  Breaking
+this dependence is part of the work below.
 
 Two projects can now proceed independently.
 

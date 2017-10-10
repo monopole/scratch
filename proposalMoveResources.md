@@ -1,9 +1,5 @@
 ## Proposal - move resources and validation code into k8s.io/common
 
-__Author__: Jeff  Regan @monopole
-
-__Status__: Proposal
-
 ### abstract
 
 [DAM]: https://goo.gl/T66ZcD
@@ -13,28 +9,34 @@ We want to write a [DAM]-enabling prototype called
 
 This doc describes work to do to allow `kexpand`
 development in a way that improves, rather than
-worsens, the relationship of these repositories:
+worsens, relations between these repositories:
 
 * [_k8s.io/kubernetes_] -- core kubernetes components;
   kubelet, scheduler, etc.
-* [_k8s.io/kubectl_] -- home to `kexpand`
+* [_k8s.io/kubectl_] -- home of `kexpand`
   and eventual home of `kubectl`.
 * [_k8s.io/common_] -- code shared by `kexpand`,
   `kubectl` and the core.
+* [_k8s.io/utils_] -- code shared by everyone ([golang] supplement)
 
 [`kexpand`]: https://github.com/kubernetes/kubectl/tree/master/cmd/kexpand
+
 [_k8s.io/kubernetes_]: https://github.com/kubernetes/kubernetes
 [_k8s.io/kubectl_]: https://github.com/kubernetes/kubectl
 [_k8s.io/common_]: https://github.com/kubernetes/common
+[_k8s.io/utils_]: https://github.com/kubernetes/utils
 [_k8s.io/apimachinery_]: https://github.com/kubernetes/apimachinery
 [_k8s.io/client-go_]: https://github.com/kubernetes/client-go
+[golang]: https://golang.org/pkg/
+[_k8s.io/kubernetes/pkg/kubectl_]: https://github.com/kubernetes/kubernetes/tree/master/pkg/kubectl
 
+Specifically, `kexpand` needs to re-use code
+currently used by `kubectl` that lives in
+[_k8s.io/kubernetes/pkg/kubectl_] - specifically the
+`resource` and `validation` packages.
 
-`kexpand` wants to vendor shared code from
-_k8s.io/common_, rather than from
-_k8s.io/kubernetes_.  This means moving code
-(primarily `resources` and `validation`) from one
-repo to another without breaking everyone.
+To allow reuse, these packages should move to
+_k8s.io/common_.
 
 [50475]: https://github.com/kubernetes/kubernetes/issues/50475
 [598]: https://github.com/kubernetes/community/pull/598
@@ -51,16 +53,15 @@ vendoring.
 
 It's generally agreed that `kubectl`, a program
 that's supposed to be a pure API client with no
-dependencies on core code, [should move][598] out
-of _k8s.io/kubernetes_ and into _k8s.io/kubectl_,
-hence the name of the latter repo.  Likewise no
-new command line API clients should appear in
-core.
+dependencies on core code, should [eventually
+move][598] out of _k8s.io/kubernetes_ and into
+_k8s.io/kubectl_, hence the name of the latter
+repo.  Likewise no new command line API clients
+should appear in core.
 
-Such a move requires additional repos, repos like
-_k8s.io/utils_ and _k8s.io/common_, to hold code
-_shared_ by `kubectl`, `kubernetes`, and
-now `kexpand`.
+Such a move requires the additional repo
+_k8s.io/common_, to hold code _shared_ by
+`kubectl`, `kubernetes`, and now `kexpand`.
 
 Moving code requires
 
@@ -72,14 +73,15 @@ Moving code requires
 1. Deleting the now un-used code from
    its original location.
 
-This is part of the big problem of detangling
-_k8s.io/kubernetes_.  We want to start working on
-`kexpand` before everything is detangled, but do
-so in a way that helps improve the overall
-situation rather than making it worse.  Rejected
-schemes include building `kexpand` in the core
-repo (introducing yet another extraction problem),
-and building `kexpand` by vendoring in _all_ of
+This is part of a larger problem of factoring
+_k8s.io/kubernetes_ into smaller reusable parts.
+We want to start working on `kexpand` before
+everything is detangled, but do so in a way that
+helps improve the overall situation rather than
+making it worse.  Rejected schemes include
+building `kexpand` in the core repo (introducing
+yet another extraction problem), and building
+`kexpand` by vendoring in _all_ of
 _k8s.io/kubernetes_, solving problems that
 creates, while doing nothing towards moving code
 out of core into to repos meant for vendoring.
@@ -104,12 +106,12 @@ to respective directories in _k8s.io/common_:
 </blockquote>
 
 This informs and emulates the desired end state of
-`validation` and `resources` living in
+`resource` and `validation` living in
 _k8s.io/common_.  Nobody wants `pkg/api` to live
 there too, since it holds unversioned types that
 are not part of a public API.  Nevertheless it
 temporarily needs to be copied too since
-`validation` and `resources` depend on it.
+`resource` and `validation` depend on it.
 
 Two projects can now proceed independently.
 
@@ -165,24 +167,24 @@ code for real:
  * Within _k8s.io/kubernetes_, break `validation`'s
    dependence on `pkg/api`.
 
- * Per work above, `validation` and `resources`
+ * Per work above, `resource` and `validation`
    are already periodically copied to
    _k8s.io/common_ preserving git history.
 
  * In _k8s.io/kubernetes_, start a PR by
    actually __deleting__
-   `validation` and `resources`.
+   `resource` and `validation`.
 
  * Finish that PR by modifing all code in
    _k8s.io/kubernetes_ (i.e. the `kubectl`
-   program) to vendor `validation` and `resources`
+   program) to vendor `resource` and `validation`
    from _k8s.io/common_ instead.  Commit the
    change.
 
  * Remove the warning in
    _k8s.io/common/README.md_; the repo now a
    normal repository containing the canonical
-   `validation` and `resources` source code.
+   `resource` and `validation` source code.
 
 
 ### The morning code copy script

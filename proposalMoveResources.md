@@ -98,7 +98,9 @@ _k8s.io/kubernetes_
    k8s.io/  kubernetes/   pkg/kubectl/validation
 </pre>
 </blockquote>
+
 to respective directories in _k8s.io/common_:
+
 <blockquote>
 <pre>
    k8s.io/      common/   pkg/api

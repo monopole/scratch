@@ -1,10 +1,11 @@
 # Prototype of [Declarative Application Management](https://goo.gl/T66ZcD)
 
-This demo assumes
+This tutorial assumes
 
- * Go 1.9.1 installed
  * git installed
- * Clone of k8s core at `$GOPATH/src/k8s.io/kubernetes`
+ * Go 1.9.1 installed
+ * You have a [gcloud](https://cloud.google.com) account,
+   or can adapt what follows to some other cluster host.
 
 The prototype used here is temporarily being developed
 in a branch of _k8s.io/kubernetes_.
@@ -12,19 +13,35 @@ in a branch of _k8s.io/kubernetes_.
 Concurrent to development of the prototype,
 we're making a home for it in the _k8s.io/kubectl_
 repo so others can work on it.  This is trickier
-than it sounds because of code coupling issues.
+than it sounds because of code coupling issues
+in the core.
 
-In the meantime, we can demo from the core.
+## Customize your environment
 
-### Make a place to work
+__ATTENTION__:
+This is the only thing that _requires_ an edit to work.
 
+Run it, but then up-arrow/edit/enter to customize.
+
+```
+# Specify your actual account.
+TUT_ACCOUNT_ID=some.person@gmail.com
+
+# Specify an actual project associated with that account.
+TUT_PROJECT_ID=lyrical-gantry-618
+```
+
+
+## Make a place to work
+
+<!-- @mkTmpDir @demo -->
 ```
 TUT_DIR=$(mktemp -d)
 ```
 
-### Build your cloud
+## Configure gcloud
 
-Get gcloud:
+<!-- @getGcloud @demo -->
 ```
 tmp=$HOME/google-cloud-sdk
 if [ -d "$tmp" ]; then
@@ -34,85 +51,116 @@ else
   echo Grab gcloud from https://cloud.google.com/sdk/downloads
 fi
 unset tmp
+```
 
-# Make sure you have it.
+<!-- @confirmGcloud @demo -->
+```
 which gcloud
-
-# Ignore this as we'll make our own kubectl below.
-which kubectl
 ```
 
-Configure it:
+<!-- @logIn @demo -->
 ```
-# Pick one of your existing projects.
-TUT_PROJECT_ID=lyrical-gantry-618
+gcloud config set account $TUT_ACCOUNT_ID
+gcloud auth application-default login
+```
 
-# Define a new name.
-TUT_CLUSTER_NAME=cluster-spinach
-
-gcloud config set account jeff.regan@gmail.com
+<!-- @setMiscState @demo -->
+```
 gcloud config set project $TUT_PROJECT_ID
 gcloud config set compute/region us-west1
 gcloud config set compute/zone us-west1-a
-gcloud auth application-default login
-gcloud config list
 ```
 
-Make the cluster:
+### Make a cluster if necessary
+
+<!-- @listClusters @demo -->
+```
+gcloud config list
+gcloud container clusters list
+```
+
+If you don't have one, make one:
+<!-- @makeACluster @demo -->
+```
+gcloud container clusters create cluster-kinflate-demo
+```
+
+You should now have at least one cluster:
+<!-- @confirmNewCluster @demo -->
 ```
 gcloud container clusters list
-gcloud container clusters create $TUT_CLUSTER_NAME
-
-# Done below
-# kubectl get nodes
-# kubectl get pods # None
 ```
 
+## Pull and build the prototype...
 
-### Grab code
-
+<!-- @makeDisposableDirectory @demo -->
 ```
-cd $GOPATH/src/k8s.io/kubernetes
+GIT_DIR=$TUT_DIR/src/k8s.io/kubernetes
+mkdir -p $GIT_DIR
+```
 
-# Provides a reminder to commit/stash if needed.
-git checkout master
+<!-- @initDisposableRepo @demo -->
+```
+cd $GIT_DIR
+git init
+```
 
+<!-- @addRemote @demo -->
+```
+cd $GIT_DIR
 REMOTE_NAME=kinflate
 BRANCH_NAME=feature-apply-manifest
 
-# Add a remote.
 git remote add -t $BRANCH_NAME \
     $REMOTE_NAME https://github.com/monopole/kubernetes.git
+```
 
-# Fetch it.
+Enter this, then catch up on [hacker news](https://news.ycombinator.com).
+<!-- @fetchCode @demo -->
+```
+cd $GIT_DIR
 git fetch $REMOTE_NAME
-
-# Checkout the branch.
 git checkout $REMOTE_NAME/$BRANCH_NAME
 ```
 
+Optional (if some changes were committed during
+the life of this temp repo):
+```
+cd $GIT_DIR
+git fetch $REMOTE_NAME
+git merge $REMOTE_NAME/$BRANCH_NAME -X theirs -m whatever
+```
 
-Spot check that you have the right code:
+Spot check a file to confirm the branch:
+<!-- @spotCheck @demo -->
 ```
-cd $GOPATH/src/k8s.io/kubernetes
-# This should exist:
-file ./pkg/kubectl/cmd/manifest/BUILD
+file $GIT_DIR/pkg/kubectl/cmd/manifest/BUILD
 ```
 
-Build it.
+<!-- @build @demo -->
 ```
-cd $GOPATH/src/k8s.io/kubernetes
-go build -o $TUT_DIR/mykubectl k8s.io/kubernetes/cmd/kubectl
+GOPATH=$TUT_DIR go build -o $TUT_DIR/mykubectl \
+    k8s.io/kubernetes/cmd/kubectl
 alias mykubectl=$TUT_DIR/mykubectl
+```
+
+## ...Or just grab this linux-amd64 binary:
+
+TODO: put a `mykubectl` binary snapshot somewhere
+
+## Do the demo
+
+Does the `kinflate` command exist?
+If so, you're ready to go.
+
+<!-- @checkHelpMessage @demo -->
+```
 mykubectl help kinflate
 ```
 
-### Or just grab this linux-amd64 binary:
+### Define a manifest tree
 
-TODO: put a binary somewhere
-
-### Define a manifest (multiple files)
-
+<!-- @makeTree @demo -->
 ```
 mkdir -p $TUT_DIR/manifest
 mkdir -p $TUT_DIR/instance/test
@@ -122,6 +170,7 @@ mkdir -p $TUT_DIR/instance/prod
 
 Define a manifest - metadata about an application:
 
+<!-- @makeResourceManifest @demo -->
 ```
 cat <<'EOF' >$TUT_DIR/manifest/Kube-manifest.yaml
 # Example from https://goo.gl/T66ZcD
@@ -144,7 +193,7 @@ maintainers:
   email: briangrant@google.com
   github: bgrant0607
 
-bases:
+resources:
 - deployment.yaml
 #- service.yaml
 #- pvc.yaml
@@ -156,6 +205,7 @@ EOF
 ```
 
 Define an associated but generic deployment:
+<!-- @makeDeployment @demo -->
 ```
 cat <<'EOF' >$TUT_DIR/manifest/deployment.yaml
 apiVersion: extensions/v1beta1
@@ -182,7 +232,8 @@ spec:
 EOF
 ```
 
-Define an "instance" (aka overlay):
+Define a patch - a customization of base resources:
+<!-- @makePatchManifest @demo -->
 ```
 cat <<'EOF' >$TUT_DIR/instance/test/Kube-manifest.yaml
 apiVersion: manifest.k8s.io/v1alpha1
@@ -204,14 +255,15 @@ objectAnnotations:
   note: This is my first try
 
 # Note the relative path
-bases:
+resources:
 - ../../manifest
 
-# These are strategic merge patch overlays in the form of API resources
-overlays:
+# Strategic merge patches in the form of API resources
+patches:
 - deployment.yaml
 
-# There could also be configmaps in Base, which would make these overlays
+# There could also be configmaps in resources,
+# which would make these patches:
 configmaps:
 - type: env
   namePrefix: app-env
@@ -220,7 +272,7 @@ configmaps:
   namePrefix: app-config
   file: app-init.ini
 
-# There could be secrets in Base, if just using a fork/rebase workflow
+# There could be secrets in resources, if just using a fork/rebase workflow
 secrets:
 - type: tls
   namePrefix: app-tls
@@ -231,7 +283,8 @@ prune: true
 EOF
 ```
 
-Define an instance (overlay) deployment (gets merged with the base):
+Define a patch, creating a specific instance to merge with base resources.
+<!-- @makePatchedDeployment @demo -->
 ```
 cat <<'EOF' >$TUT_DIR/instance/test/deployment.yaml
 apiVersion: extensions/v1beta1
@@ -252,27 +305,34 @@ EOF
 
 
 ### Try it
-
+<!-- @runKinflate @demo -->
 ```
 mykubectl kinflate --alsologtostderr -v=5 \
     -f $TUT_DIR/instance/test > $TUT_DIR/result.yaml
 ```
 
-# Compare output to input:
+If the above command fails with a `certificate signed by unknown
+authority` error, then clearly _you are holding it wrong and you
+should feel bad about yourself._
+
+Revoke your login, re-login, and create a new cluster, then try again
+(seriously, that should work).
+
+<!-- @reviewNewDeployment @demo -->
 ```
 more $TUT_DIR/result.yaml
 ```
 
+<!-- @reviewOriginalDeployment @demo -->
 ```
 more $TUT_DIR/manifest/deployment.yaml
 ```
 
-
-
 ### Cleanup
 
+Or just let the system wipe it someday, since its in /tmp.
+<!-- @optionalCleanup @demo -->
 ```
-git branch -D $REMOTE_NAME/$BRANCH_NAME
-git remote rm $REMOTE_NAME
+/bin/rm -rf $TUT_DIR
+cd
 ```
-

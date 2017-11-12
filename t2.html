@@ -23,25 +23,26 @@ function toggleNav(n) {
     closeNav(el);
   }
 }
+function doHelp() {
+  alert("help")
+}
+function goPrev() {
+  alert("prev")
+}
+function goNext() {
+  alert("next")
+}
 </script>
 <style type="text/css">
 
-.mainColumn {
-  background-color: orange;
+.body {
+/* background-color: orange; */
   display: flex;
   flex-direction: column;
   margin: 0px auto;
   padding: 0;
 }
-.hyperControlRow {
-  background-color: purple;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  align-items: center;
-}
 .mdControlRow {
-  background-color: cyan;
   display: flex;
   justify-content: space-between;
   flex-direction: row;
@@ -51,7 +52,7 @@ function toggleNav(n) {
   cursor: pointer;
 }
 .leftNavHam, .rightNavHam {
-  background-color: yellow;
+  background-color: cyan;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -66,33 +67,57 @@ function toggleNav(n) {
   justify-content: flex-end;
 }
 .lessonControlColumn { /* contains lessonTitleBox */
-  background-color: blue;
-  display: inline-block;
-  min-width: 400px;
   display: flex;
   flex-direction: column;
 }
 .lessonTitleBox {
-  background-color: blue;
-  min-width: 350px;
+  background-color: red;
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 37px;
 }
 .lessonNavRow {
-  background-color: lightblue;
-  display: inline-block;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   flex-direction: row;
+  align-items: center;
 }
 .lessonNavItem {
-  background-color: darkorange;
   display: inline-block;
+}
+.lessonPrevClicker, .lessonNextClicker {
+  background-color: pink;
+  height: 37px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-width: 300px; /* everything should be in multiples of this basic width */
+}
+.lessonPrevClicker {
+  padding-right: 10px;
+  justify-content: flex-end;
+}
+.lessonNextClicker {
+  padding-left: 10px;
+  justify-content: flex-start;
+}
+.lessonPrevContent {
+  padding-right: 15px;
+}
+.lessonNextContent {
+  padding-left: 15px;
+}
+.mdHelp {
+  height: 37px;
+  background-color: orange;
+  display: inline-flex;
+  padding-right: 15px;
+  padding-left: 15px;
+  align-items: center;
 }
 
 .contentRow {
-  background-color: lightpurple;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -101,245 +126,171 @@ function toggleNav(n) {
 
 .leftNavBody, .leftNavHeader, .rightNavHeader, .rightNavBody {
   display: inline-block;
-  min-width: 100px;
-  max-width: 100px;
-  width: 100px;
-  background-color: gray;
+  min-width: 150px;
+  max-width: 400px;
 }
 .leftNavBody {
-  background-color: lightyellow;
+  padding-left: 10px;
 }
 .rightNavBody {
-  background-color: lightgreen;
+  padding-left: 25px;
 }
 .lessonBody {
-  background-color: lightblue;
   display: inline-block;
-  min-width: 400px;
 }
 
 </style>
 </head>
 <body>
-  <div class='mainColumn'>
+  <div class='mdControlRow'>
 
-    <div class='hyperControlRow'>
-			<div class='leftNavHeader'>L-EMPTY</div>
-			<div class='mdControlRow'>
+    <div class='leftNavHam clickable' onclick='toggleNav("leftNavBody")'> HAM </div>
 
-				<div class='leftNavHam clickable' onclick='toggleNav("leftNavBody")'>
-					&lt;&lt;
-				</div>
+    <div class='lessonControlColumn'>
+      <div class='lessonTitleBox'>  LESSONTITLE  </div>
 
-				<div class='lessonControlColumn'>
-					<div class='lessonTitleBox'>
-						LESSONTITLE
-					</div>
-					<div class='lessonNavRow'>
-						<div class='lessonNavItem clickable'>
-							PREVIOUS
-						</div>
-						<div class='lessonNavItem clickable'>
-							help
-						</div>
-						<div class='lessonNavItem clickable'>
-							NEXT
-						</div>
-					</div>
-				</div>
+      <div class='lessonNavRow'>
+        <div class='lessonPrevClicker clickable' onclick='goPrev()'>
+          <div class='lessonPrevContent'> previous topic... </div>
+          <div class='lessonNavItem'>  &lt; </div>
+        </div>
 
-				<div class='rightNavHam clickable' onclick='toggleNav("rightNavBody")'>
-					&gt;&gt;
-				</div>
+        <div class='mdHelp clickable' onclick='doHelp()'> ? </div>
 
-			</div>
-			<div class='rightNavHeader'>R-EMPTY</div>
+        <div class='lessonNextClicker clickable' onclick='goNext()'>
+          <div class='lessonNavItem'> &gt; </div>
+          <div class='lessonNextContent'> next topic... </div>
+        </div>
+      </div>
+
     </div>
 
-    <div class='contentRow'>
-      <div class='leftNavBody'>
-         <p>LEFTNAVBODY</p>
-         <p>LEFTNAVBODY</p>
-         <p>LEFTNAVBODY</p>
-         <p>LEFTNAVBODY</p>
-         <p>LEFTNAVBODY</p>
-         <p>LEFTNAVBODY</p>
-         <p>LEFTNAVBODY</p>
-         <p>LEFTNAVBODY</p>
-      </div>
-      <div class='lessonBody'>
-				 <p>
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-				 </p>
-				 <p>
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-				 </p>
-				 <p>
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-				 </p>
-				 <p>
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-				 </p>
-				 <p>
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-				 </p>
-				 <p>
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-				 </p>
-				 <p>
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-				 </p>
-				 <p>
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-				 </p>
-				 <p>
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-				 </p>
-				 <p>
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-				 </p>
-				 <p>
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-				 </p>
-				 <p>
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-				 </p>
-				 <p>
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-					Lesson lesson lesson lesson lesson lesson lesson.
-				 </p>
-      </div>
-      <div class='rightNavBody'>
-         <p>RIGHTNAVBODY</p>
-         <p>RIGHTNAVBODY</p>
-         <p>RIGHTNAVBODY</p>
-         <p>RIGHTNAVBODY</p>
-         <p>RIGHTNAVBODY</p>
-         <p>RIGHTNAVBODY</p>
-         <p>RIGHTNAVBODY</p>
-         <p>RIGHTNAVBODY</p>
-         <p>RIGHTNAVBODY</p>
-         <p>RIGHTNAVBODY</p>
-         <p>RIGHTNAVBODY</p>
-      </div>
-    </div>
+    <div class='rightNavHam clickable' onclick='toggleNav("rightNavBody")'> HAM </div>
 
+  </div>
+
+  <div class='contentRow'>
+    <div class='leftNavBody'>
+       <p>left nav bod</p>
+       <p>left nav bod</p>
+       <p>left nav bod</p>
+       <p>left nav bod</p>
+       <p>left nav bod</p>
+       <p>left nav bod</p>
+       <p>left nav bod</p>
+       <p>left nav bod</p>
+    </div>
+    <div class='lessonBody'>
+       <p>
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+       </p>
+       <p>
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+       </p>
+       <p>
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+       </p>
+       <p>
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+       </p>
+       <p>
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+       </p>
+       <p>
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+       </p>
+       <p>
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+       </p>
+       <p>
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+        Lesson lesson lesson lesson lesson lesson lesson.
+       </p>
+    </div>
+    <div class='rightNavBody'>
+       <p>rght nav body</p>
+       <p>rght nav body</p>
+       <p>rght nav body</p>
+       <p>rght nav body</p>
+       <p>rght nav body</p>
+       <p>rght nav body</p>
+       <p>rght nav body</p>
+       <p>rght nav body</p>
+       <p>rght nav body</p>
+       <p>rght nav body</p>
+       <p>rght nav body</p>
+    </div>
   </div>
 </body>
 </html>

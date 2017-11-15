@@ -1,3 +1,33 @@
+<!--
+
+good example: https://www.sanwebe.com/2016/08/creating-simple-slide-bar-menu-quickly
+
+
+https://www.google.com/search?q=css+that+knows+the+viewport&oq=css+that+knows+the+viewport&aqs=chrome..69i57.8447j0j7&client=ubuntu&sourceid=chrome&ie=UTF-8
+
+https://css-tricks.com/fun-viewport-units/
+
+https://www.quirksmode.org/mobile/viewports.html
+
+https://www.w3schools.com/css/css_rwd_mediaqueries.asp
+
+bottom line -
+
+ design for mobile first
+ below a certain width, always take 100% width, and
+ do menus that slide in over the top of stuff.
+
+ use the calc function!
+
+   https://css-tricks.com/fun-viewport-units/
+
+   https://cloudfour.com/thinks/breaking-out-with-viewport-units-and-calc/
+
+http://www.roblukedesign.com/trunk/trunk.html
+
+
+
+-->
 <html>
 <head>
 <script type="text/javascript">
@@ -7,13 +37,9 @@ function getElByClass(name) {
 }
 function openNav(el) {
   el.style.display = 'inline-block';
-  // var list = getElByClass('lessonList');
-  // list.style.left = '{{.LayNavWidth}}px';
 }
 function closeNav(el) {
   el.style.display = 'none';
-  // var list = getElByClass('lessonList');
-  // list.style.left = '0';
 }
 function toggleNav(n) {
   var el = getElByClass(n);
@@ -36,7 +62,7 @@ function goNext() {
 <style type="text/css">
 
 .body {
-/* background-color: orange; */
+  background-color: gray;
   display: flex;
   flex-direction: column;
   margin: 0px auto;
@@ -59,11 +85,11 @@ function goNext() {
   transition: 1s;
 }
 .leftNavHam {
-  padding-left: 15px;
+  padding-left: 1em;
   justify-content: flex-start;
 }
 .rightNavHam {
-  padding-right: 15px;
+  padding-right: 1em;
   justify-content: flex-end;
 }
 .lessonControlColumn { /* contains lessonTitleBox */
@@ -75,7 +101,7 @@ function goNext() {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 37px;
+  height: 3vh;
 }
 .lessonNavRow {
   display: flex;
@@ -88,55 +114,54 @@ function goNext() {
 }
 .lessonPrevClicker, .lessonNextClicker {
   background-color: pink;
-  height: 37px;
+  height: 3vh;
   display: flex;
   flex-direction: row;
   align-items: center;
-  min-width: 300px; /* everything should be in multiples of this basic width */
+  min-width: 12em; /* everything should be in multiples of this basic width */
 }
 .lessonPrevClicker {
-  padding-right: 10px;
+  padding-right: 1em;
   justify-content: flex-end;
 }
 .lessonNextClicker {
-  padding-left: 10px;
+  padding-left: 1em;
   justify-content: flex-start;
 }
 .lessonPrevContent {
-  padding-right: 15px;
+  padding-right: 1em;
 }
 .lessonNextContent {
-  padding-left: 15px;
+  padding-left: 1em;
 }
 .mdHelp {
-  height: 37px;
+  height: 3vh;
   background-color: orange;
   display: inline-flex;
-  padding-right: 15px;
-  padding-left: 15px;
+  padding-right: 1em;
+  padding-left: 1em;
   align-items: center;
 }
-
 .contentRow {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   flex-direction: row;
 }
-
-.leftNavBody, .leftNavHeader, .rightNavHeader, .rightNavBody {
+.leftNavBody, .rightNavBody {
   display: inline-block;
-  min-width: 150px;
-  max-width: 400px;
+  min-width: 10em;
+  max-width: 10em;
 }
 .leftNavBody {
-  padding-left: 10px;
+  padding-left: 1em;
 }
 .rightNavBody {
-  padding-left: 25px;
+  padding-left: 1em;
 }
 .lessonBody {
   display: inline-block;
+  max-width: 36em; /* 3 times lesson clicker width */
 }
 
 </style>

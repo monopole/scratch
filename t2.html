@@ -53,16 +53,39 @@ function doHelp() {
   alert("help")
 }
 function goPrev() {
-  alert("prev")
+  prev = getElByClass('lessonPrevContent')
+  current = getElByClass('lessonCurrentContent')
+  next = getElByClass('lessonNextContent')
+  tmp = next.innerHTML
+  next.innerHTML = current.innerHTML
+  current.innerHTML = prev.innerHTML
+  prev.innerHTML = tmp
 }
 function goNext() {
-  alert("next")
+  prev = getElByClass('lessonPrevContent')
+  current = getElByClass('lessonCurrentContent')
+  next = getElByClass('lessonNextContent')
+  tmp = prev.innerHTML
+  prev.innerHTML = current.innerHTML
+  current.innerHTML = next.innerHTML
+  next.innerHTML = tmp
 }
 </script>
 <style type="text/css">
-
+body {
+  background-color: lightblue;
+}
+@media only screen and (min-width: 1000px) {
+  body {
+    background-color: lightgreen;
+  }
+}
+@media only screen and (min-width: 1600px) {
+  body {
+    background-color: yellow;
+  }
+}
 .body {
-  background-color: gray;
   display: flex;
   flex-direction: column;
   margin: 0px auto;
@@ -77,26 +100,33 @@ function goNext() {
 .clickable {
   cursor: pointer;
 }
-.leftNavHam, .rightNavHam {
+.leftNavBurger, .rightNavBurger {
   background-color: cyan;
   display: flex;
   flex-direction: row;
   align-items: center;
   transition: 1s;
 }
-.leftNavHam {
+.leftNavBurger {
   padding-left: 1em;
   justify-content: flex-start;
 }
-.rightNavHam {
+.rightNavBurger {
   padding-right: 1em;
   justify-content: flex-end;
 }
-.lessonControlColumn { /* contains lessonTitleBox */
+.lessonControlColumn { /* contains lessonCurrentContent */
   display: flex;
   flex-direction: column;
 }
-.lessonTitleBox {
+.contentTitleBox {
+  background-color: beige;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3vh;
+}
+.lessonCurrentContent {
   background-color: red;
   display: flex;
   justify-content: center;
@@ -126,6 +156,18 @@ function goNext() {
 }
 .lessonNextClicker {
   padding-left: 1em;
+  justify-content: flex-start;
+}
+.lessonPrevDescriptor, .lessonNextDescriptor {
+  background-color: purple;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.lessonPrevDescriptor {
+  justify-content: flex-end;
+}
+.lessonNextDescriptor {
   justify-content: flex-start;
 }
 .lessonPrevContent {
@@ -169,14 +211,19 @@ function goNext() {
 <body>
   <div class='mdControlRow'>
 
-    <div class='leftNavHam clickable' onclick='toggleNav("leftNavBody")'> HAM </div>
+    <div class='leftNavBurger clickable' onclick='toggleNav("leftNavBody")'> BURGER </div>
 
     <div class='lessonControlColumn'>
-      <div class='lessonTitleBox'>  LESSONTITLE  </div>
+      <div class='contentTitleBox'>  Kubernetes Cluster Management  </div>
+
+      <div class='lessonCurrentContent'>  dockerize  </div>
 
       <div class='lessonNavRow'>
         <div class='lessonPrevClicker clickable' onclick='goPrev()'>
-          <div class='lessonPrevContent'> previous topic... </div>
+          <div class='lessonPrevDescriptor' >
+            <div class='lessonNavItem'> prev </div>
+            <div class='lessonPrevContent'> classics </div>
+          </div>
           <div class='lessonNavItem'>  &lt; </div>
         </div>
 
@@ -184,13 +231,16 @@ function goNext() {
 
         <div class='lessonNextClicker clickable' onclick='goNext()'>
           <div class='lessonNavItem'> &gt; </div>
-          <div class='lessonNextContent'> next topic... </div>
+          <div class='lessonNextDescriptor' >
+            <div class='lessonNavItem'> next </div>
+            <div class='lessonNextContent'> electromagnetics </div>
+					</div
         </div>
       </div>
 
     </div>
 
-    <div class='rightNavHam clickable' onclick='toggleNav("rightNavBody")'> HAM </div>
+    <div class='rightNavBurger clickable' onclick='toggleNav("rightNavBody")'> HAM </div>
 
   </div>
 
@@ -206,54 +256,6 @@ function goNext() {
        <p>left nav bod</p>
     </div>
     <div class='lessonBody'>
-       <p>
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-       </p>
-       <p>
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-       </p>
-       <p>
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-       </p>
-       <p>
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-        Lesson lesson lesson lesson lesson lesson lesson.
-       </p>
        <p>
         Lesson lesson lesson lesson lesson lesson lesson.
         Lesson lesson lesson lesson lesson lesson lesson.

@@ -10,25 +10,17 @@ apiVersion: manifest.k8s.io/v1alpha1
 kind: Package
 metadata:
   name: makes-staging-hello
-
 description: hello configured for staging
-
 namePrefix: staging-
-
 objectLabels:
   instance: staging
   org: acmeCorporation
-
 objectAnnotations:
   note: Hello, I am staging!
-
-packages:
+patches:
 - ../../base
-
 patches:
 - map.yaml
-
 EOF
 ```
-
 __Next:__ [Staging Patch](staging-patch)

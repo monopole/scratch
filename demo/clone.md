@@ -1,31 +1,34 @@
 # Clone
 
-You want to run the _hello_ service.
+[hello]: https://github.com/monopole/hello
 
-Find an [off-the-shelf config](https://github.com/kinflate/example-hello)
-for it, then clone it:
+You want to run the [hello] service.
+
+[off-the-shelf config]: https://github.com/kinflate/example-hello
+
+Find an [off-the-shelf config] for it, and clone that
+config into a directory called `base`:
 
 <!-- @cloneIt @test -->
 ```
 cd $DEMO_HOME
-mkdir hello
 git clone \
     https://github.com/kinflate/example-hello \
-    hello/base
+    base
 ```
 
-The current layout is:
-<!-- @seeBase @test -->
+<!-- @runTree @test -->
 ```
-tree $DEMO_HOME/hello
+tree $DEMO_HOME
 ```
 
-One could immediately apply these resources to a cluster:
+One could immediately apply these resources to a
+cluster:
 
 > ```
-> kubectl apply -f $DEMO_HOME/hello/base
+> kubectl apply -f $DEMO_HOME/base
 > ```
 
-to instantiate the _hello_ service in an uncustomized form.
+to instantiate the _hello_ service in off-the-shelf form.
 
 __Next:__ [The Base Manifest](manifest)

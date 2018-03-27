@@ -4,11 +4,12 @@ The `base` directory has a _manifest_:
 
 <!-- @manifest @test -->
 ```
-BASE=$DEMO_HOME/hello/base
+BASE=$DEMO_HOME/base
 more $BASE/Kube-manifest.yaml
 ```
-Run kinflate on the base; the customized resources are
-emitted to `stdout`:
+
+Run kinflate on the base to emit customized resources
+to `stdout`:
 
 <!-- @manifest @test -->
 ```

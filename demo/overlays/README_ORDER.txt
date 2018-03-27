@@ -1,6 +1,4 @@
-staging-manifest
-staging-patch
-production-manifest
-production-patch
+staging
+production
 compare
 deploy

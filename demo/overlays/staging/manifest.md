@@ -17,10 +17,10 @@ objectLabels:
   org: acmeCorporation
 objectAnnotations:
   note: Hello, I am staging!
-patches:
+bases:
 - ../../base
 patches:
 - map.yaml
 EOF
 ```
-__Next:__ [Staging Patch](staging-patch)
+__Next:__ [Staging Patch](patch)

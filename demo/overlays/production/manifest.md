@@ -17,11 +17,11 @@ objectLabels:
   org: acmeCorporation
 objectAnnotations:
   note: Hello, I am production!
-patches:
+bases:
 - ../../base
 patches:
 - deployment.yaml
 EOF
 ```
 
-__Next:__ [Production Patch](production-patch)
+__Next:__ [Production Patch](patch)

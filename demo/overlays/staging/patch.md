@@ -18,4 +18,4 @@ data:
 EOF
 ```
 
-__Next:__ [Production Manifest](production-manifest)
+__Next:__ [Production Manifest](../production)

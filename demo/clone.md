@@ -2,7 +2,7 @@
 
 [hello]: https://github.com/monopole/hello
 
-You want to run the [hello] service.
+Assume you want to run the [hello] service.
 
 [off-the-shelf config]: https://github.com/kinflate/example-hello
 
@@ -11,10 +11,9 @@ config into a directory called `base`:
 
 <!-- @cloneIt @test -->
 ```
-cd $DEMO_HOME
 git clone \
     https://github.com/kinflate/example-hello \
-    base
+    $DEMO_HOME/base
 ```
 
 <!-- @runTree @test -->

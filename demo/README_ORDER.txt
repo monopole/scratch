@@ -1,4 +1,0 @@
-clone
-manifest
-customize
-overlays

@@ -152,7 +152,7 @@ function goFmtAll {
 SOURCE_GH_ORG=kubernetes
 SOURCE_GH_REPO=kubectl
 
-TARGET_GH_ORG=monopole
+TARGET_GH_ORG=kubernetes-sigs
 TARGET_GH_REPO=kustomize
 
 prepTheBranch
@@ -210,7 +210,7 @@ Run these commands to stage the repo:
   git checkout master
   git rebase bulk_move_unpacking
   git push -f -o nokeycheck sso://user/jregan/kustomize master
-  gob-ctl acl user/$USER/kustomize -reader all_users
+  gob-ctl acl -reader all_users user/$USER/kustomize
 
 See https://user.git.corp.google.com/jregan/kustomize/
 

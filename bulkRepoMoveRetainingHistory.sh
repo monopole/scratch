@@ -28,13 +28,16 @@ function copyDirectory {
   local TARGET_PATH=$2
 
   # These branches should not exist anywhere.
-  local SOURCE_BRANCH=bulk_move_packing
+  local SOURCE_BRANCH=bulk_withdrawal
 
   # Clone the source.
   local SOURCE_CLONE=$(mktemp -d)
   reportIt "Cloning source $SOURCE_GH_ORG/$SOURCE_GH_REPO to $SOURCE_CLONE ..."
+  # git clone \
+  #     https://github.com/$SOURCE_GH_ORG/$SOURCE_GH_REPO \
+  #     $SOURCE_CLONE
   git clone \
-      https://github.com/$SOURCE_GH_ORG/$SOURCE_GH_REPO \
+      git@github.com:$SOURCE_GH_ORG/$SOURCE_GH_REPO \
       $SOURCE_CLONE
 
   cd $SOURCE_CLONE
@@ -93,10 +96,10 @@ function prepTheBranch {
 
   reportIt "Cloning $TARGET_GH_ORG/$TARGET_GH_REPO to $TARGET_CLONE ..."
   git clone \
-      https://github.com/$TARGET_GH_ORG/$TARGET_GH_REPO \
+      git@github.com:$TARGET_GH_ORG/$TARGET_GH_REPO \
       $TARGET_CLONE
   cd $TARGET_CLONE
-  TARGET_BRANCH=bulk_move_unpacking
+  TARGET_BRANCH=bulk_deposit
   reportIt "Creating empty target branch."
   git checkout -b $TARGET_BRANCH
 
@@ -197,23 +200,35 @@ After that, try running the pre-commit script:
 
   GOPATH=$TARGET_TMP ./bin/pre-commit.sh
 
-Don't forget to copy ~/gopath1/src/k8s.io/kubectl/.travis.yml
+Don't forget
+
+  cp ~/gopath1/src/k8s.io/kubectl/.travis.yml  $TARGET_CLONE
 
 Run these commands to stage the repo:
 
-  gob-ctl delete user/$USER/kustomize
-  gob-ctl create user/$USER/kustomize
   git add Gopkg.lock
   git add Gopkg.toml
   git add vendor/
+  git add .travis.yml
+  git add -A
+
   git commit -a -m "Bulk move from k8s/kubectl"
-  git checkout master
-  git rebase bulk_move_unpacking
-  git push -f -o nokeycheck sso://user/jregan/kustomize master
-  gob-ctl acl -reader all_users user/$USER/kustomize
+
+  # git remote add upstream git@github.com:kubernetes-sigs/kustomize.git
+  # git remote set-url --push upstream no_push
+
+  # git checkout master
+  # git rebase bulk_deposit
+  # git push -f -o nokeycheck sso://user/jregan/kustomize master
+  # Internal
+  # gob-ctl delete user/$USER/kustomize
+  # gob-ctl create user/$USER/kustomize
+  # git push -f -o nokeycheck sso://user/jregan/kustomize master
+  # gob-ctl acl -reader all_users user/$USER/kustomize
 
 See https://user.git.corp.google.com/jregan/kustomize/
 
 See https://g3doc.corp.google.com/company/teams/opensource/releasing/preparing.md?cl=head#stage-your-code-for-review
 
 EOF
+:
